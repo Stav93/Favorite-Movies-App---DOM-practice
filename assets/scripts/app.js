@@ -17,7 +17,7 @@ const updateUi = () => {
   }
 };
 
-const addNewMovieElement = ({title, image, rating}) => {
+const addNewMovieElement = ({id, title, image, rating}) => {
   const newMovieEl = document.createElement("li")
   newMovieEl.className = "movie-element";
   newMovieEl.innerHTML =
@@ -30,8 +30,25 @@ const addNewMovieElement = ({title, image, rating}) => {
       <p>${rating}/5</p>
     </div>
     `;
+    // console.log(id)
+    newMovieEl.addEventListener("click", deleteMovieHandler.bind(null, id))
     const listRoot = document.getElementById("movie-list")
     listRoot.append(newMovieEl)
+}
+
+const deleteMovieHandler = (movieId) => {
+  console.log(movieId)
+  let movieIndex = 0;
+  for (const movieEl of movies) {
+    if (movieEl.id === movieId) {
+      break;
+    }
+    movieIndex++;
+  }
+  movies.splice(movieIndex, 1);
+  const listRoot = document.getElementById("movie-list")
+  listRoot.children[movieIndex].remove();
+  // listRoot.removeChild(listRoot.children[movieIndex]);
 }
 
 const toggleBackdrop = () => {
@@ -75,6 +92,7 @@ const addMovieBtnHandler = () => {
   }
 
   const newMovie = {
+    id: Math.random().toString(),
     title: titleValue,
     image: imageValue,
     rating: ratingValue,
